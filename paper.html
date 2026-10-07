@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>お誕生日新聞 紙面</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/paper.css">
+</head>
+<body>
+<div class="toolbar">
+  <a class="back" href="./">← 入力にもどる</a>
+  <span class="print-note">印刷は「A3・縦・倍率100%（実際のサイズ）・余白なし」で。PDF保存→コンビニのネットプリントへ。</span>
+  <button id="printBtn" type="button" disabled>写真を読み込み中…</button>
+</div>
+<div class="stage"><div class="scaler" id="scaler"><div id="root"></div></div></div>
+<script src="js/paper.js"></script>
+</body>
+</html>

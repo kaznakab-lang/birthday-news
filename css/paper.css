@@ -1,0 +1,122 @@
+/* お誕生日新聞 — A3片面の紙面（1123×1587px ＝ 297×420mm @96dpi） */
+:root{
+  --ink:#22201C; --paper:#FFFDF9; --band:#F7F1E4; --ph:#E9E4DA; --ph2:#E3DCCD;
+  --sub:#5A544A; --rule:#CFC7B8; --accent:#A3241B; --gold:#B08A3E;
+  --mincho:'Shippori Mincho B1',serif; --serif:'Noto Serif JP',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#E6E1D8}
+body{font-family:var(--serif);color:var(--ink)}
+
+/* 画面表示：ツールバー＋縮小表示 */
+.toolbar{position:sticky;top:0;z-index:10;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:10px 16px;background:#22201C;color:#FFFDF9;font-family:'Noto Sans JP',system-ui,sans-serif;font-size:14px}
+.toolbar a,.toolbar button{font:inherit}
+.toolbar .back{color:#FFFDF9}
+.toolbar button{min-height:44px;padding:0 18px;border:none;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+.toolbar button:disabled{opacity:.5;cursor:wait}
+.print-note{font-size:12px;opacity:.85}
+.stage{padding:16px;display:flex;justify-content:center}
+.scaler{transform-origin:top left}
+.state{max-width:560px;margin:60px auto;padding:24px;background:var(--paper);font-size:15px;line-height:1.8;text-align:center}
+
+/* 紙面本体 */
+.sheet{width:1123px;height:1587px;padding:16px 24px;background:var(--paper);display:flex;flex-direction:column;gap:4px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.sheet h1,.sheet h2,.sheet h3,.sheet p{margin:0}
+.ph{background:var(--ph);display:flex;align-items:center;justify-content:center;color:var(--sub);font-size:10px;overflow:hidden;position:relative}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.band .ph{background:var(--ph2)}
+.fit{overflow:hidden}
+.body{font-size:10.5px;line-height:1.6;text-align:justify}
+.cols3{column-count:3;column-gap:10px;column-rule:1px solid var(--rule)}
+.acc{color:var(--accent)}
+.mincho{font-family:var(--mincho)}
+
+/* 題字 */
+.mast{height:80px;flex-shrink:0;display:flex;flex-direction:row-reverse;gap:18px;align-items:stretch;padding-bottom:5px;border-bottom:4px double var(--gold)}
+.daiji{background:var(--accent);color:#fff;font-family:var(--mincho);font-weight:800;font-size:31px;letter-spacing:2px;line-height:1.08;width:86px;height:74px;flex-shrink:0;display:flex;align-items:center;justify-content:center;text-align:center}
+.mast-main{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.mast-top{display:flex;justify-content:space-between;font-size:11px}
+.mast-top .hb{color:var(--gold);font-weight:700;letter-spacing:2px}
+.mast-date{font-family:var(--mincho);font-size:30px;font-weight:800;line-height:1.1}
+.mast-bottom{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;border-top:1px solid var(--ink);padding-top:2px}
+.mast-bottom b{font-family:var(--mincho);font-size:17px;color:var(--accent)}
+
+/* トップ段 */
+.top{height:490px;flex-shrink:0;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px}
+.top-left{grid-column:span 6;display:flex;flex-direction:column;gap:3px;overflow:hidden}
+.top-photo{width:100%;aspect-ratio:4/3;flex-shrink:0;font-size:14px}
+.caption{font-size:9.5px}
+.others{border-top:1px solid var(--ink);padding-top:2px}
+.top-right{grid-column:span 6;display:flex;flex-direction:column;gap:4px;overflow:hidden}
+.kicker{font-size:10px;font-weight:700;color:var(--accent)}
+.headline{font-family:var(--mincho);font-weight:800;font-size:26px;line-height:1.2}
+.headline .sub{display:block;font-size:18px}
+.lead{font-size:11px;line-height:1.6;font-weight:700;text-align:justify}
+.top-body{flex:1;min-height:0}
+.col-h{margin-top:2px !important;font-family:var(--mincho);font-size:15px;border-top:2px solid var(--ink);border-bottom:2px solid var(--gold);padding-top:2px}
+.col-body{flex-shrink:0}
+
+/* 生まれ年 */
+.year{height:341px;flex-shrink:0;display:flex;flex-direction:column;gap:5px;border-top:2px solid var(--ink);padding-top:5px}
+.sec-h{font-family:var(--mincho);font-size:16px}
+.sec-h span{background:var(--ink);color:var(--paper);padding:1px 10px}
+.year-grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));column-gap:14px;row-gap:6px}
+.topic{display:flex;gap:10px;align-items:flex-start;min-height:0}
+.topic .ph{width:200px;height:150px;flex-shrink:0}
+.topic-text{flex:1;min-width:0;height:150px;display:flex;flex-direction:column;gap:2px}
+.topic-title{font-size:12px;font-weight:700}
+.topic-text .body{flex:1;min-height:0}
+
+/* 月日特集 */
+.band{height:494px;flex-shrink:0;display:flex;flex-direction:column;gap:5px;background:var(--band);padding:5px 10px}
+.band-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--gold);padding-bottom:2px}
+.band-h .md{font-family:var(--mincho);font-weight:800;font-size:26px;line-height:1;color:var(--accent)}
+.band-h .tok{font-family:var(--mincho);font-weight:700;font-size:16px}
+.band-h .note{font-size:11px}
+.band-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px;height:316px}
+.features{grid-column:span 8;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;min-height:0}
+.feature{display:flex;flex-direction:column;gap:3px;overflow:hidden;min-height:0}
+.feature .ph{width:100%;aspect-ratio:4/3;flex-shrink:0}
+.feature-title{font-size:12px;font-weight:700}
+.feature .body{flex:1;min-height:0}
+.more{grid-column:span 4;display:flex;flex-direction:column;gap:4px;border-left:1px solid var(--ink);padding-left:12px;overflow:hidden}
+.more h3{font-family:var(--mincho);font-size:15px}
+.more-list{display:grid;grid-template-columns:38px 1fr;row-gap:5px;font-size:10.5px;line-height:1.6;align-content:start;flex:1;min-height:0}
+.more-list .y{font-family:var(--mincho);font-weight:800;color:var(--accent)}
+.people-h{font-size:12px;font-weight:700}
+.people{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.person{display:flex;gap:7px;align-items:flex-start;min-height:0}
+.person .ph{width:56px;height:70px;flex-shrink:0;font-size:9px}
+.person-text{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;gap:1px;font-size:10px;line-height:1.5}
+.person-name{font-size:11px;font-weight:700}
+.person-bio{flex:1;min-height:0}
+
+/* 下段 */
+.bottom{flex:1;min-height:0;overflow:hidden;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.cell{padding:5px 10px;border-right:1px solid var(--ink);display:flex;flex-direction:column;gap:2px;min-height:0;overflow:hidden}
+.cell:first-child{padding-left:0}
+.cell.last{grid-column:span 2;border-right:none;padding-right:0}
+.cell h3{font-family:var(--mincho);font-size:14px;border-bottom:2px solid var(--gold)}
+.cell.last h3{color:var(--accent)}
+.prices{display:grid;grid-template-columns:1fr auto auto;column-gap:8px;font-size:10px;line-height:1.5}
+.prices .h{font-weight:700}
+.small{font-size:10px;line-height:1.5}
+.msg{border-top:1px dotted var(--ink);padding-top:2px}
+.msg b{color:var(--accent)}
+.foot{height:11px;flex-shrink:0;display:flex;justify-content:space-between;gap:24px;font-size:8.5px;color:var(--sub);line-height:11px;overflow:hidden}
+.foot .credits{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.foot .issued{white-space:nowrap}
+
+/* 印刷：A3縦・余白なし・等倍 */
+@page{size:A3 portrait;margin:0}
+@media print{
+  html,body{background:#fff}
+  .toolbar{display:none}
+  .stage{padding:0;display:block}
+  .scaler{transform:none !important;width:auto !important;height:auto !important}
+  .sheet{box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+/* 写真クレジット（各写真の右下に小さく） */
+.ph .credit{position:absolute;right:0;bottom:0;max-width:100%;padding:1px 4px;background:rgba(255,253,249,.82);color:#3A362F;font-family:'Noto Sans JP',sans-serif;font-size:6.5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph.none{background-image:repeating-linear-gradient(135deg,transparent 0 6px,rgba(176,138,62,.12) 6px 7px)}

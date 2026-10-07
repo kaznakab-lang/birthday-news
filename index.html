@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>お誕生日新聞 — 生まれた日の新聞をつくる</title>
+<meta name="description" content="生年月日を入れるだけで、生まれた日のニュースと写真でつくるA3の誕生日新聞。PDFにしてコンビニで印刷できます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#22201C;--paper:#FFFDF9;--ground:#F6F1E6;--sub:#5A544A;--accent:#A3241B;--gold:#B08A3E}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:'Noto Sans JP',system-ui,sans-serif}
+.wrap{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--paper)}
+header{padding:28px 24px 16px;border-bottom:3px double var(--ink);display:flex;flex-direction:column;gap:8px}
+.brand{display:flex;align-items:center;gap:12px}
+.daiji{background:var(--accent);color:#fff;font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:18px;line-height:1.05;padding:6px 8px;text-align:center}
+.brand h1{margin:0;font-family:'Shippori Mincho B1',serif;font-size:22px}
+.lead{margin:0;font-size:13px;color:var(--sub);line-height:1.7}
+form{flex:1;padding:20px 24px 28px;display:flex;flex-direction:column;gap:18px}
+.field{display:flex;flex-direction:column;gap:6px}
+label{font-size:14px;font-weight:700}
+.opt{font-weight:400;color:var(--sub);font-size:12px}
+input,textarea{width:100%;border:1.5px solid var(--ink);background:#fff;padding:0 12px;font-size:16px;font-family:inherit;color:var(--ink)}
+input{height:48px}
+textarea{padding:10px 12px;height:96px;resize:vertical;line-height:1.6}
+input:focus,textarea:focus{outline:3px solid var(--gold);outline-offset:1px}
+.hint{font-size:12px;color:var(--sub);line-height:1.6}
+.err{font-size:13px;color:var(--accent);font-weight:700;min-height:1em}
+button{height:54px;background:var(--accent);color:#fff;border:none;font-size:17px;font-weight:700;font-family:inherit;cursor:pointer}
+button:hover{background:#8a1e17}
+.how{padding:0 24px 28px;font-size:13px;line-height:1.8;color:var(--sub)}
+.how h2{font-size:14px;color:var(--ink);margin:0 0 4px}
+.how ol{margin:0;padding-left:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand"><div class="daiji">誕生<br>日報</div><h1>お誕生日新聞</h1></div>
+  <p class="lead">生年月日を入れるだけで、その日のニュースと写真でつくるA3の記念新聞。大切な人への誕生日プレゼントに。</p>
+</header>
+
+<form id="f" novalidate>
+  <div class="field">
+    <label for="n">主役のお名前</label>
+    <input id="n" name="n" type="text" maxlength="20" placeholder="山田 花子" autocomplete="off" required>
+  </div>
+  <div class="field">
+    <label for="d">生年月日</label>
+    <input id="d" name="d" type="date" min="1946-01-01" max="2008-12-31" value="1989-10-06" required>
+    <span class="hint">1946〜2008年生まれに対応（順次ふやしています）</span>
+  </div>
+  <div class="field">
+    <label for="i">主役のひとこと紹介 <span class="opt">任意・100字まで</span></label>
+    <textarea id="i" name="i" maxlength="100" placeholder="小さいころから本が大好き。いまは二児の母として毎日大忙し。"></textarea>
+    <span class="hint">紙面の「誕生日によせて」欄に入ります</span>
+  </div>
+  <div class="field">
+    <label for="m">お祝いのメッセージ <span class="opt">任意・160字まで</span></label>
+    <textarea id="m" name="m" maxlength="160" placeholder="お誕生日おめでとう！これからもよろしくね"></textarea>
+  </div>
+  <div class="field">
+    <label for="fr">贈り主のお名前 <span class="opt">任意</span></label>
+    <input id="fr" name="f" type="text" maxlength="20" placeholder="家族一同" autocomplete="off">
+  </div>
+  <p class="err" id="err" role="alert"></p>
+  <button type="submit">紙面をつくる</button>
+</form>
+
+<section class="how">
+  <h2>印刷のしかた</h2>
+  <ol>
+    <li>紙面ができたら「印刷・PDF保存」を押す</li>
+    <li>用紙はA3・縦、倍率は100%（実際のサイズ）、余白なしでPDFに保存</li>
+    <li>PDFをコンビニのネットプリントに登録して、A3・カラーで印刷</li>
+  </ol>
+</section>
+</div>
+<script>
+(function () {
+  var f = document.getElementById('f'), err = document.getElementById('err');
+  var avail = null;
+  fetch('data/index.json', { cache: 'no-cache' }).then(function (r) { return r.json(); })
+    .then(function (j) { avail = j; }).catch(function () {});
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    err.textContent = '';
+    var n = f.n.value.trim(), d = f.d.value;
+    if (!n) { err.textContent = 'お名前を入れてください'; f.n.focus(); return; }
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d);
+    if (!m || +m[1] < 1946 || +m[1] > 2008) { err.textContent = '1946〜2008年生まれの生年月日を入れてください'; f.d.focus(); return; }
+    if (avail) {
+      var ok = avail.years.indexOf(+m[1]) >= 0 && avail.months.indexOf(m[1] + '-' + m[2]) >= 0 && avail.days.indexOf(m[2] + '-' + m[3]) >= 0;
+      if (!ok) { err.textContent = 'この生年月日の紙面はただいま準備中です（順次ふやしています）'; return; }
+    }
+    var p = new URLSearchParams({ d: d, n: n });
+    if (f.i.value.trim()) p.set('i', f.i.value.trim());
+    if (f.m.value.trim()) p.set('m', f.m.value.trim());
+    if (f.f.value.trim()) p.set('f', f.f.value.trim());
+    location.href = 'paper.html?' + p.toString();
+  });
+})();
+</script>
+</body>
+</html>
