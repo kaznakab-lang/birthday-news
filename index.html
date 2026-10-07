@@ -49,8 +49,8 @@ button:hover{background:#8a1e17}
   </div>
   <div class="field">
     <label for="d">生年月日</label>
-    <input id="d" name="d" type="date" min="1946-01-01" max="2008-12-31" value="1989-10-06" required>
-    <span class="hint">1946〜2008年生まれに対応（順次ふやしています）</span>
+    <input id="d" name="d" type="date" min="1946-01-01" max="2025-12-31" value="1989-10-06" required>
+    <span class="hint">1946〜2025年生まれに対応（順次ふやしています）</span>
   </div>
   <div class="field">
     <label for="i">主役のひとこと紹介 <span class="opt">任意・100字まで</span></label>
@@ -91,7 +91,7 @@ button:hover{background:#8a1e17}
     var n = f.n.value.trim(), d = f.d.value;
     if (!n) { err.textContent = 'お名前を入れてください'; f.n.focus(); return; }
     var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d);
-    if (!m || +m[1] < 1946 || +m[1] > 2008) { err.textContent = '1946〜2008年生まれの生年月日を入れてください'; f.d.focus(); return; }
+    if (!m || +m[1] < 1946 || +m[1] > 2025) { err.textContent = '1946〜2025年生まれの生年月日を入れてください'; f.d.focus(); return; }
     if (avail) {
       var ok = avail.years.indexOf(+m[1]) >= 0 && avail.months.indexOf(m[1] + '-' + m[2]) >= 0 && avail.days.indexOf(m[2] + '-' + m[3]) >= 0;
       if (!ok) { err.textContent = 'この生年月日の紙面はただいま準備中です（順次ふやしています）'; return; }

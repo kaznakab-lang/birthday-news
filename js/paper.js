@@ -7,7 +7,7 @@
 (function () {
   'use strict';
 
-  var MIN_YEAR = 1946, MAX_YEAR = 2008;
+  var MIN_YEAR = 1946, MAX_YEAR = 2025;
   var root = document.getElementById('root');
   var printBtn = document.getElementById('printBtn');
 
