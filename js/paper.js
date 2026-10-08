@@ -109,7 +109,7 @@
     var kicker = top.day === D ? Y + '年' + M + '月' + D + '日のトップニュース' : Y + '年' + M + '月の大ニュース';
     var others = (month.others || []).slice().sort(function (a, b) {
       return Math.abs(a.day - D) - Math.abs(b.day - D);
-    }).slice(0, 3).map(function (o) {
+    }).slice(0, 2).map(function (o) {
       return '◆' + (o.day === D ? '<b>この日</b>　' : M + '月' + o.day + '日　') + tpl(o.text, V);
     }).join('<br>');
 

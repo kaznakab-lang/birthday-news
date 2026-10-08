@@ -56,3 +56,14 @@ Wikimedia Commons を英語で検索して最初に見つかる自由ライセ�
 `/tmp/claude-0/-home-claude/63e8176e-bb3a-5774-821f-d9ceb0236b0c/scratchpad/site/data/days/MM-DD.json`
 （UTF-8、インデント2、ensure_ascii=False 相当）。書いたら python3 で json として読めるか確かめる。
 最後に、担当した日付ごとに「確認に使ったURL」と「自信のない点」を短く報告する。
+
+## 補足
+
+スクリプトは scratchpad/gen_days_<担当の最初の日付>/ に置き、他の作業者と同じファイル名を使わない。
+2月29日も作る（うるう日。その日に起きた出来事・生まれた人に限る。少なければ more は5件でよい）。
+
+## アクセス制限への対策（重要）
+
+ほかの作業者も同時に Wikipedia を読んでいる。WebFetch は1件ずつ、続けて連打しない。
+HTTP 429（アクセス制限）が出たら、Bash で `sleep 120` してから再試行する。
+1つの題材の確認に何度も失敗するときは、確認しやすい別の題材に替える。
