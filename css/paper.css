@@ -1,6 +1,6 @@
 /* お誕生日新聞 — A3片面の紙面（1123×1587px ＝ 297×420mm @96dpi） */
 :root{
-  --ink:#22201C; --paper:#FFFDF9; --band:#F7F1E4; --ph:#E9E4DA; --ph2:#E3DCCD;
+  --ink:#22201C; --paper:#FFFFFF; --band:#F7F1E4; --ph:#E9E4DA; --ph2:#E3DCCD;
   --sub:#5A544A; --rule:#CFC7B8; --accent:#A3241B; --gold:#B08A3E;
   --mincho:'Shippori Mincho B1',serif; --serif:'Noto Serif JP',serif;
 }
@@ -118,5 +118,5 @@ body{font-family:var(--serif);color:var(--ink)}
 }
 
 /* 写真クレジット（各写真の右下に小さく） */
-.ph .credit{position:absolute;right:0;bottom:0;max-width:100%;padding:1px 4px;background:rgba(255,253,249,.82);color:#3A362F;font-family:'Noto Sans JP',sans-serif;font-size:6.5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph .credit{position:absolute;right:0;bottom:0;max-width:100%;padding:1px 4px;background:rgba(255,255,255,.82);color:#3A362F;font-family:'Noto Sans JP',sans-serif;font-size:6.5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ph.none{background-image:repeating-linear-gradient(135deg,transparent 0 6px,rgba(176,138,62,.12) 6px 7px)}
