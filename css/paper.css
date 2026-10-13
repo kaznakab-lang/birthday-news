@@ -90,6 +90,12 @@ body{font-family:var(--serif);color:var(--ink)}
 .person-text{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;gap:1px;font-size:10px;line-height:1.5}
 .person-name{font-size:11px;font-weight:700}
 .person-bio{flex:1;min-height:0}
+.stars{grid-column:span 2;display:flex;flex-direction:column;gap:3px;min-height:0;border-left:1px solid var(--ink);padding-left:12px}
+.stars-h{font-family:var(--mincho);font-weight:800;font-size:13px;color:var(--accent)}
+.stars-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px;row-gap:2px;font-size:10.5px;line-height:1.5;align-content:start;flex:1;min-height:0}
+.stars-list li{display:flex;flex-wrap:wrap;column-gap:6px;align-items:baseline;min-width:0}
+.stars-list b{font-weight:700;white-space:nowrap}
+.stars-list span{color:var(--sub);font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* 下段 */
 .bottom{flex:1;min-height:0;overflow:hidden;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}

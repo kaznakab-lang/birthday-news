@@ -129,11 +129,18 @@
       return '<span class="y">' + esc(m.year) + '</span><span>' + tpl(m.text, V) + '</span>';
     }).join('');
 
-    var people = (day.people || []).slice(0, 4).map(function (p) {
+    var stars = day.stars || [];
+    var people = (day.people || []).slice(0, stars.length ? 2 : 4).map(function (p) {
       return '<div class="person">' + photo(Object.assign({ shape: 'portrait' }, p.photo), '', '') +
         '<div class="person-text"><span class="person-name">' + esc(p.name) + '（' + esc(p.born) + '年）</span>' +
         '<span class="person-bio fit">' + tpl(p.bio, V) + '</span></div></div>';
     }).join('');
+    if (stars.length) {
+      people += '<div class="stars"><div class="stars-h">同じ誕生日の有名人</div><ul class="stars-list fit">' +
+        stars.slice(0, 10).map(function (t) {
+          return '<li><b>' + esc(t.name) + '</b><span>' + esc(t.job) + '・' + esc(t.born) + '年</span></li>';
+        }).join('') + '</ul></div>';
+    }
 
     var prices = (year.prices || []).map(function (p) {
       return '<span>' + esc(p.item) + '</span><span>' + esc(p.then) + '</span><span>' + esc(p.now) + '</span>';
