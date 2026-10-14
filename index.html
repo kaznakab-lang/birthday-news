@@ -62,7 +62,7 @@ button:hover{background:#8a1e17}
       <label class="sel"><span class="vh">月</span><select id="bm" aria-label="生まれた月"></select></label>
       <label class="sel"><span class="vh">日</span><select id="bd" aria-label="生まれた日"></select></label>
     </div>
-    <span class="hint">1970〜2025年生まれに対応しています</span>
+    <span class="hint">1930〜2025年生まれに対応しています</span>
   </div>
   <div class="field">
     <label for="i">主役のひとこと紹介 <span class="opt">任意・100字まで</span></label>
@@ -97,7 +97,7 @@ button:hover{background:#8a1e17}
   fetch('data/index.json', { cache: 'no-cache' }).then(function (r) { return r.json(); })
     .then(function (j) { avail = j; }).catch(function () {});
   function pad(n) { return (n < 10 ? '0' : '') + n; }
-  var MIN_Y = 1970, MAX_Y = 2025;
+  var MIN_Y = 1930, MAX_Y = 2025;
   var by = document.getElementById('by'), bm = document.getElementById('bm'), bd = document.getElementById('bd');
   function wareki(y) {
     if (y >= 2019) return y === 2019 ? '平成31・令和元' : '令和' + (y - 2018);
