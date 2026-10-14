@@ -113,6 +113,17 @@ body{font-family:var(--serif);color:var(--ink)}
 .foot .credits{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .foot .issued{white-space:nowrap}
 
+/* iPhoneアプリ内の表示 */
+.app .toolbar{display:none}
+.app .stage{padding:8px}
+.pdf body,.pdf{background:#fff}
+.pdf .stage{padding:0;display:block}
+.pdf .sheet{box-shadow:none}
+/* 購入前の見本の透かし */
+.sheet{position:relative}
+.wm{position:absolute;inset:0;z-index:5;pointer-events:none;display:flex;flex-direction:column;justify-content:space-around;align-items:center;overflow:hidden}
+.wm span{transform:rotate(-28deg);font-family:'Noto Sans JP',sans-serif;font-weight:700;font-size:230px;letter-spacing:.3em;color:rgba(163,36,27,.13);white-space:nowrap}
+
 /* 印刷：A3縦・余白なし・等倍 */
 @page{size:A3 portrait;margin:0}
 @media print{

@@ -1,0 +1,90 @@
+# お誕生日新聞 — Codemagic 設定
+#
+# triggering の項目をあえて書いていない。
+# push しても自動ではビルドされず、Codemagic の画面で Start new build を押したときだけ動く。
+#
+# 先頭のワークフローが初期選択になる。
+
+workflows:
+
+  # ビルドが通るかどうかだけを確かめる用。署名も配信もしない。
+  ios-build-check:
+    name: お誕生日新聞 ビルド確認のみ
+    max_build_duration: 30
+    instance_type: mac_mini_m2
+    environment:
+      xcode: latest
+    scripts:
+      - name: Xcodeプロジェクトを生成
+        script: |
+          brew install xcodegen
+          xcodegen generate
+      - name: 署名なしでビルド
+        script: |
+          set -o pipefail
+          xcodebuild build \
+            -project BirthdayNews.xcodeproj \
+            -scheme BirthdayNews \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee /tmp/build.log
+      - name: エラー行を表示
+        script: |
+          echo "===== error を含む行（最大60行） ====="
+          grep -h -E "error:" /tmp/build.log 2>/dev/null | head -60 || true
+          echo "===== ここまで ====="
+
+  # 署名して TestFlight まで配信する。
+  # 先に Apple Developer で App ID（com.kutalabo.birthdaynews）を、
+  # App Store Connect でアプリと App内課金（com.kutalabo.birthdaynews.pdf）を作っておくこと。
+  ios-testflight:
+    name: お誕生日新聞 TestFlight
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+
+    integrations:
+      app_store_connect: codemagic
+
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        # project.yml の PRODUCT_BUNDLE_IDENTIFIER と必ず揃えること。
+        bundle_identifier: com.kutalabo.birthdaynews
+      vars:
+        XCODE_PROJECT: "BirthdayNews.xcodeproj"
+        XCODE_SCHEME: "BirthdayNews"
+      xcode: latest
+
+    scripts:
+      - name: Xcodeプロジェクトを生成
+        script: |
+          brew install xcodegen
+          xcodegen generate
+
+      - name: ビルド番号を採番
+        script: |
+          agvtool new-version -all $PROJECT_BUILD_NUMBER
+
+      - name: 署名設定をプロジェクトへ適用
+        script: |
+          xcode-project use-profiles
+
+      - name: ipaをビルド
+        script: |
+          xcode-project build-ipa \
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      # 失敗したとき、原因の行だけを画面に出す。
+      scripts:
+        - name: エラー行を表示
+          script: |
+            echo "===== error を含む行（最大60行） ====="
+            grep -h -E "error:|Error:|FAILED|failed with" /tmp/xcodebuild_logs/*.log 2>/dev/null | grep -v "^\s*$" | head -60 || true
+            echo "===== ここまで ====="
+      app_store_connect:
+        auth: integration

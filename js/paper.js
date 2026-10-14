@@ -53,13 +53,32 @@
     });
   }
 
+  // ---------- 表示モード ----------
+  // app=1 … iPhoneアプリの中で表示（ツールバーなし）
+  // pdf=1 … アプリがPDFを作るための等倍表示（縮小しない）
+  // wm=1  … 購入前の見本表示（「見本」の透かし）
+  var q = new URLSearchParams(location.search);
+  var APP = q.get('app') === '1' || q.get('pdf') === '1';
+  var PDF = q.get('pdf') === '1';
+  var WM = q.get('wm') === '1';
+  if (APP) document.documentElement.classList.add('app');
+  if (PDF) document.documentElement.classList.add('pdf');
+
+  // アプリ（Swift）へ状態を知らせる
+  function notify(state, detail) {
+    try {
+      var h = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.paper;
+      if (h) h.postMessage({ state: state, detail: detail || '' });
+    } catch (e) {}
+  }
+
   function showState(html) {
-    root.innerHTML = '<div class="state">' + html + '<p><a href="./">入力にもどる</a></p></div>';
+    root.innerHTML = '<div class="state">' + html + (APP ? '' : '<p><a href="./">入力にもどる</a></p>') + '</div>';
     printBtn.textContent = '印刷できません';
+    notify('error', root.textContent);
   }
 
   // ---------- 入力 ----------
-  var q = new URLSearchParams(location.search);
   var dm = /^(\d{4})-(\d{2})-(\d{2})$/.exec(q.get('d') || '');
   if (!dm) { showState('<p>生年月日が指定されていません。</p>'); return; }
   var Y = +dm[1], M = +dm[2], D = +dm[3];
@@ -90,7 +109,11 @@
     render(r[0], r[1], r[2]);
     return loadPhotos();
   }).then(function () {
+    // 文字の大きさの調整は、Webフォントの読み込みを待ってから
+    return (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).catch(function () {});
+  }).then(function () {
     fitAll();
+    notify('ready');
     printBtn.disabled = false;
     printBtn.textContent = '印刷・PDF保存';
   }).catch(function (e) {
@@ -201,6 +224,7 @@
       '</div>' +
       '<div class="foot"><span class="credits">写真：Wikimedia Commons（作者・ライセンスは各写真に表記）／出来事の出典：Wikipedia ほか</span>' +
       '<span class="issued">※記念品として作成　' + today.getFullYear() + '年' + (today.getMonth() + 1) + '月' + today.getDate() + '日 発行</span></div>' +
+      (WM ? '<div class="wm" aria-hidden="true"><span>見本</span><span>見本</span><span>見本</span></div>' : '') +
       '</div>';
     scale();
   }
@@ -274,7 +298,7 @@
 
   // ---------- 画面幅に合わせて縮小表示 ----------
   function scale() {
-    var s = Math.min(1, (window.innerWidth - 32) / 1123);
+    var s = PDF ? 1 : Math.min(1, (window.innerWidth - (APP ? 16 : 32)) / 1123);
     var sc = document.getElementById('scaler');
     sc.style.transform = 'scale(' + s + ')';
     sc.style.width = 1123 * s + 'px';

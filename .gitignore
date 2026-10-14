@@ -1,1 +1,16 @@
 _upload/
+
+# Xcode（Codemagicが毎回作る）
+*.xcodeproj/
+*.xcworkspace/
+DerivedData/
+build/
+*.ipa
+*.dSYM.zip
+xcuserdata/
+.DS_Store
+
+# 秘密情報は絶対に入れない
+*.p12
+*.p8
+*.mobileprovision
