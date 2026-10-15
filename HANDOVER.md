@@ -1,4 +1,4 @@
-# お誕生日新聞 — 引継ぎメモ
+# 誕生日報（お誕生日新聞） — 引継ぎメモ
 
 会話をまたいで続きをするときは、まずこれを読む。
 
@@ -9,6 +9,7 @@
 - iPhoneアプリだけで出す。Web版（GitHub Pages）はリリース時に止める。
 
 ## 決めたこと
+- アプリ名：「誕生日報」（App Storeの名前は「誕生日報 - 生まれた日の記念新聞」。リポジトリ名などの内部の名前は birthday-news のまま）
 - bundle id：`com.kutalabo.birthdaynews`（`project.yml` と `codemagic.yaml` の両方。片方だけ直さない）
 - App内課金の商品ID：`com.kutalabo.birthdaynews.pdf`（消耗型）。`BirthdayNews/Models/PurchaseManager.swift` と同じにする
 - 置き場所：`C:\dev\BIRTHDAY-NEWS`。ビルドは Codemagic（宝くじチェックと同じ作り：XcodeGen → xcodebuild）

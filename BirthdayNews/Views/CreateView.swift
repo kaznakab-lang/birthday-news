@@ -13,6 +13,10 @@ struct CreateView: View {
     @State private var from = ""
     @State private var error = ""
     @State private var opened: PaperRecord?
+    @FocusState private var focus: Field?
+
+    /// 入力欄（キーボードを閉じるため）
+    enum Field: Hashable { case name, intro, message, from }
 
     static let minYear = 1930
     static let maxYear = 2025
@@ -34,7 +38,7 @@ struct CreateView: View {
                 HStack(spacing: 12) {
                     Daiji()
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("お誕生日新聞").font(Theme.mincho(22)).foregroundStyle(Theme.ink)
+                        Text("生まれた日の記念新聞").font(Theme.mincho(20)).foregroundStyle(Theme.ink)
                         Text("生年月日を入れるだけで、その日のニュースと写真でつくるA3の記念新聞。")
                             .font(.footnote).foregroundStyle(Theme.sub)
                     }
@@ -45,6 +49,9 @@ struct CreateView: View {
             Section("主役のお名前") {
                 TextField("山田 花子", text: $name)
                     .textContentType(.name)
+                    .focused($focus, equals: .name)
+                    .submitLabel(.done)
+                    .onSubmit { focus = nil }
                     .onChange(of: name) { _, v in if v.count > 20 { name = String(v.prefix(20)) } }
             }
 
@@ -74,6 +81,7 @@ struct CreateView: View {
             Section {
                 TextField("小さいころから本が大好き。", text: $intro, axis: .vertical)
                     .lineLimit(2...4)
+                    .focused($focus, equals: .intro)
                     .onChange(of: intro) { _, v in if v.count > 100 { intro = String(v.prefix(100)) } }
             } header: {
                 Text("主役のひとこと紹介（任意・100字まで）")
@@ -84,11 +92,15 @@ struct CreateView: View {
             Section("お祝いのメッセージ（任意・160字まで）") {
                 TextField("お誕生日おめでとう！", text: $message, axis: .vertical)
                     .lineLimit(2...5)
+                    .focused($focus, equals: .message)
                     .onChange(of: message) { _, v in if v.count > 160 { message = String(v.prefix(160)) } }
             }
 
             Section("贈り主のお名前（任意）") {
                 TextField("家族一同", text: $from)
+                    .focused($focus, equals: .from)
+                    .submitLabel(.done)
+                    .onSubmit { focus = nil }
                     .onChange(of: from) { _, v in if v.count > 20 { from = String(v.prefix(20)) } }
             }
 
@@ -109,6 +121,14 @@ struct CreateView: View {
                 Text("紙面の確認は無料です。印刷用のPDFを保存するときにお支払いいただきます。")
             }
         }
+        // 下へスクロールしたとき、キーボード上の「完了」を押したときにキーボードを閉じる
+        .scrollDismissesKeyboard(.interactively)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("完了") { focus = nil }
+            }
+        }
         .navigationTitle("つくる")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(item: $opened) { r in
@@ -121,6 +141,7 @@ struct CreateView: View {
     }
 
     private func create() {
+        focus = nil
         let n = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !n.isEmpty else { error = "お名前を入れてください"; return }
         guard let y = year else { error = "生まれた年を選んでください"; return }

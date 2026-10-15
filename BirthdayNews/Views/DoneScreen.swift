@@ -27,7 +27,7 @@ struct DoneScreen: View {
                         .background(Theme.accent, in: Circle())
                         .accessibilityHidden(true)
                     Text("PDFができました").font(Theme.mincho(22)).foregroundStyle(Theme.ink)
-                    Text("\(name)さんのお誕生日新聞\nA3・縦・1枚")
+                    Text("\(name)さんの誕生日報\nA3・縦・1枚")
                         .font(.footnote).foregroundStyle(Theme.sub)
                         .multilineTextAlignment(.center)
                 }

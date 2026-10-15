@@ -57,7 +57,7 @@ struct PaperRecord: Codable, Identifiable, Hashable {
     var pdfFileName: String {
         let bad = CharacterSet(charactersIn: "/\\:?*\"<>|")
         let safe = name.components(separatedBy: bad).joined()
-        return "お誕生日新聞_\(safe.isEmpty ? "紙面" : safe)_\(dateString).pdf"
+        return "誕生日報_\(safe.isEmpty ? "紙面" : safe)_\(dateString).pdf"
     }
 
     /// 英数字と - . _ ~ 以外はすべて %xx にする（日本語や + も）

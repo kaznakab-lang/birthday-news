@@ -38,7 +38,7 @@ targets:
       properties:
         # 暗号化の質問（輸出コンプライアンス・フランス）を毎回聞かれないようにする。HTTPSだけなので対象外。
         ITSAppUsesNonExemptEncryption: false
-        CFBundleDisplayName: お誕生日新聞
+        CFBundleDisplayName: 誕生日報
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         # アイコンが無いと App Store Connect へのアップロードで弾かれる
