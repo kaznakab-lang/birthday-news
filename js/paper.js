@@ -269,7 +269,8 @@
     var els = Array.prototype.slice.call(document.querySelectorAll('.sheet .ph'));
     return Promise.all(els.map(function (el) {
       return findPhoto(el).then(function (ph) {
-        if (!ph) { el.classList.add('none'); return; }
+        // 写真が見つからない欄は枠ごと消し、その分を文字に使う
+        if (!ph) { el.classList.add('none', 'gone'); el.parentElement.classList.add('nophoto'); return; }
         var img = new Image();
         img.alt = '';
         img.referrerPolicy = 'no-referrer';
@@ -287,6 +288,14 @@
 
   // ---------- はみ出し調整：収まるまで文字を少しずつ小さく ----------
   function fitAll() {
+    // 写真が消えて広くなった欄は、収まる範囲で文字を少し大きくする（13pxまで）
+    document.querySelectorAll('.sheet .nophoto .fit').forEach(function (el) {
+      var size = parseFloat(getComputedStyle(el).fontSize), n = 0;
+      while (el.scrollHeight <= el.clientHeight + 1 && size < 13 && n < 20) {
+        size += 0.25; n++;
+        el.style.fontSize = size + 'px';
+      }
+    });
     document.querySelectorAll('.sheet .fit').forEach(function (el) {
       var size = parseFloat(getComputedStyle(el).fontSize), n = 0;
       while ((el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) && size > 8 && n < 30) {
